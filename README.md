@@ -1,6 +1,7 @@
 # RdbCSV
 
 RDB dumped csv/tsv can be read and write.
+
 Rdbcsv supoorts mainly MySQL and PostgreSQL within reasonable range.
 
 ## Installation
@@ -20,6 +21,7 @@ gem 'rdb_csv'
 `RdbCSV` is similar to the standard CSV class.
 
 database type: argment `db`. The default is to use standard CSV class.
+
 delimiter type: argment `delimiter` The default is to use `\t`, because the dafault delimiter for dump data is `\t`.
 
 ### MySQL

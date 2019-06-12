@@ -55,8 +55,7 @@ class RdbCSV
     when 'r'
       if db == :default
         ::CSV.open(file, mode, col_sep: delimiter) do |csv|
-          yield csv
-        end
+          yield csv end
       else
         File.open(file) do |f|
           csv = CSV.new(f, mode, db: db, delimiter: delimiter, quote: quote)
@@ -75,6 +74,14 @@ class RdbCSV
 
           csv.buffer_write
         end
+      end
+    end
+  end
+
+  def self.foreach(file, db: :default, delimiter: ',', quote: '"')
+    open(file, db: db, delimiter: delimiter, quote: quote) do |csv|
+      csv.each do |row|
+        yield row
       end
     end
   end

@@ -46,6 +46,11 @@ RdbCSV.open(csv_path, db: :mysql, delimiter: ",") do |csv|
     p row
   end
 end
+
+# Use foreach
+RdbCSV.foreach(csv_path, db: :mysql, delimiter: ",") do |row|
+  p row
+end
 ```
 
 ### PostgreSQl
@@ -56,18 +61,14 @@ require 'rdb_csv'
 
 # TSV
 tsv_path = "your_dump_file_path.tsv"
-RdbCSV.open(tsv_path, db: :postgresql, delimiter: "\t") do |tsv|
-  tsv.each do |row|
-    p row
-  end
+RdbCSV.foreach(tsv_path, db: :postgresql, delimiter: "\t") do |row|
+  p row
 end
 
 # CSV
 csv_path = "your_dump_file_path.csv"
-RdbCSV.open(csv_path, db: :postgresql, delimiter: ",") do |csv|
-  csv.each do |row|
-    p row
-  end
+RdbCSV.foreach(csv_path, db: :postgresql, delimiter: ",") do |row|
+  p row
 end
 ```
 
@@ -79,10 +80,8 @@ require 'rdb_csv'
 mysql_rows = []
 
 mysql_tsv_path = "your_mysql_dump_file_path.tsv"
-RdbCSV.open(mysql_tsv_path, db: :mysql, delimiter: "\t") do |tsv|
-  tsv.each do |row|
-    mysql_rows << row
-  end
+RdbCSV.foreach(mysql_tsv_path, db: :mysql, delimiter: "\t") do |row|
+  mysql_rows << row
 end
 
 postgres_tsv_path = "your_postgres_dump_file_path.tsv"

@@ -1,12 +1,12 @@
 module RdbCSVReader
   class Reader
-    def initialize(fp, db, delimiter, escape="\\", linefeed="\n", quote='"')
+    def initialize(fp, db, delimiter, options)
       @fp = fp
       @db = db
       @delimiter = delimiter
-      @escape = escape # 1 char
-      @linefeed = linefeed
-      @quote = quote
+      @escape = options[:escape] || "\\" # 1 char
+      @linefeed = options[:linefeed] || "\n"
+      @quote = options[:quote] || '"'
     end
 
     def each_line

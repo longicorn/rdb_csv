@@ -7,22 +7,23 @@ class RdbCSV
     include RdbCSVReader
     include RdbCSVRow
 
-    def initialize(f, mode, db: nil, delimiter: "\t", quote: '"')
+    def initialize(f, mode, options)
       @f = f
-      @mode = mode
-      @db = db
-      @delimiter = delimiter
+      @mode = options[:mode]
+      @db = options[:db]
+      @delimiter = options[:delimiter] || "\t"
       @escape = "\\"
       @linefeed = "\n"
+      quote = options[:quote] || '"'
 
       # quote option is valid only mysql
-      @quote = db == :mysql ? quote : '"'
+      @quote = options[:db] == :mysql ? quote : '"'
     end
 
     def each
       raise IOError if @mode == 'w'
 
-      reader = Reader.new(@f, @db, @delimiter, escape = @escape, linefeed = @linefeed, quote = @quote)
+      reader = Reader.new(@f, @db, @delimiter, escape: @escape, linefeed: @linefeed, quote: @quote)
 
       reader.each_line do |row|
         yield row.unescape(@escape, @db, @delimiter)
@@ -50,7 +51,11 @@ class RdbCSV
     end
   end
 
-  def self.open(file, mode = 'r', db: :default, delimiter: ',', quote: '"')
+  def self.open(file, mode = 'r', options)
+    db = options[:db] || :default
+    delimiter = options[:delimiter] || "\t"
+    quote = options[:delimiter] || '"'
+
     case mode
     when 'r'
       if db == :default
@@ -78,8 +83,8 @@ class RdbCSV
     end
   end
 
-  def self.foreach(file, db: :default, delimiter: ',', quote: '"')
-    open(file, db: db, delimiter: delimiter, quote: quote) do |csv|
+  def self.foreach(file, options)
+    open(file, options) do |csv|
       csv.each do |row|
         yield row
       end

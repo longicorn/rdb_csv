@@ -1,5 +1,4 @@
 require "bundler/setup"
-#require "rdb_csv"
 require_relative "../lib/rdb_csv.rb"
 
 RSpec.configure do |config|

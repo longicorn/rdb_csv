@@ -55,25 +55,29 @@ class RdbCSV
     db = options[:db] || :default
     delimiter = options[:delimiter] || "\t"
     quote = options[:delimiter] || '"'
+    encoding = options[:encoding] || ''.encoding
 
     case mode
     when 'r'
       if db == :default
-        ::CSV.open(file, mode, col_sep: delimiter) do |csv|
-          yield csv end
+        ::CSV.open(file, mode, col_sep: delimiter, encoding: encoding) do |csv|
+          yield csv
+        end
       else
-        File.open(file) do |f|
+        File.open(file, encoding: encoding) do |f|
+        #File.open(file, "r:#{encoding}") do |f|
           csv = CSV.new(f, mode, db: db, delimiter: delimiter, quote: quote)
           yield csv
         end
       end
     when 'w'
       if db == :default
-        ::CSV.open(file, mode, col_sep: delimiter) do |csv|
+        ::CSV.open(file, mode, col_sep: delimiter, encoding: encoding) do |csv|
           yield csv
         end
       else
-        File.open(file, 'w') do |f|
+        #File.open(file, "w:#{encoding}") do |f|
+        File.open(file, "w", encoding: encoding) do |f|
           csv = CSV.new(f, mode, db: db, delimiter: delimiter, quote: quote)
           yield csv
 

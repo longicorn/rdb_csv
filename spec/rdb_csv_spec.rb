@@ -11,7 +11,7 @@ RSpec.describe RdbCSV do
   end
 
   it "Check version number" do
-    expect(RdbCSV::VERSION).to eq "0.1.2"
+    expect(RdbCSV::VERSION).to eq "0.2.0"
   end
 
   describe "normal data" do

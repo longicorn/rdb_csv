@@ -4,6 +4,9 @@ RDB dumped csv/tsv can be read and write.
 
 Rdbcsv supoorts mainly MySQL and PostgreSQL within reasonable range.
 
+## Requirements
+- Ruby 2.4+
+
 ## Installation
 
 ```

@@ -60,7 +60,8 @@ class RdbCSV
     when 'r'
       if db == :default
         ::CSV.open(file, mode, col_sep: delimiter) do |csv|
-          yield csv end
+          yield csv
+        end
       else
         File.open(file) do |f|
           csv = CSV.new(f, mode, db: db, delimiter: delimiter, quote: quote)
@@ -89,5 +90,34 @@ class RdbCSV
         yield row
       end
     end
+  end
+
+  def self.parse(str, options)
+    db = options[:db] || :default
+    delimiter = options[:delimiter] || "\t"
+    quote = options[:delimiter] || '"'
+
+    if options.key?(:db)
+      reader = CSV.new(str, 'r', db: db, delimiter: delimiter, quote: quote)
+    else
+      reader = ::CSV.parse(str, col_sep: delimiter)
+    end
+
+    rows = []
+    reader.each do |row|
+      if block_given?
+        yield row
+      else
+        rows << row
+      end
+    end
+
+    return rows unless block_given?
+  end
+
+  def self.parse_line(line, options)
+    ary = nil
+    parse(line, options).each{|row| ary = row; break}
+    return ary
   end
 end

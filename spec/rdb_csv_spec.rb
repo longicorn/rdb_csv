@@ -44,6 +44,38 @@ RSpec.describe RdbCSV do
 
         expect(read_rows).to eq check_rows
       end
+
+      it "parse without block" do
+        read_rows = []
+        path = "spec/fixtures/normal.csv"
+
+        str = File.read(path)
+        read_rows = RdbCSV.parse(str, delimiter: ",")
+
+        expect(read_rows).to eq check_rows
+      end
+
+      it "parse with block" do
+        read_rows = []
+        path = "spec/fixtures/normal.csv"
+
+        str = File.read(path)
+        RdbCSV.parse(str, delimiter: ",").each do |row|
+          read_rows << row
+        end
+
+        expect(read_rows).to eq check_rows
+      end
+
+      it "parse_line" do
+        read_rows = []
+        path = "spec/fixtures/normal.csv"
+
+        str = File.read(path)
+        read_rows = RdbCSV.parse_line(str, delimiter: ",")
+
+        expect(read_rows).to eq check_rows[0]
+      end
     end
 
     describe "Read tsv" do
@@ -69,6 +101,38 @@ RSpec.describe RdbCSV do
         end
 
         expect(read_rows).to eq check_rows
+      end
+
+      it "parse without block" do
+        read_rows = []
+        path = "spec/fixtures/normal.tsv"
+
+        str = File.read(path)
+        read_rows = RdbCSV.parse(str, delimiter: "\t")
+
+        expect(read_rows).to eq check_rows
+      end
+
+      it "parse with block" do
+        read_rows = []
+        path = "spec/fixtures/normal.tsv"
+
+        str = File.read(path)
+        RdbCSV.parse(str, delimiter: "\t").each do |row|
+          read_rows << row
+        end
+
+        expect(read_rows).to eq check_rows
+      end
+
+      it "parse_line" do
+        read_rows = []
+        path = "spec/fixtures/normal.tsv"
+
+        str = File.read(path)
+        read_rows = RdbCSV.parse_line(str, delimiter: "\t")
+
+        expect(read_rows).to eq check_rows[0]
       end
     end
 
@@ -144,6 +208,38 @@ RSpec.describe RdbCSV do
 
         expect(read_rows).to eq check_rows
       end
+
+      it "parse without block" do
+        read_rows = []
+        path = "spec/fixtures/mysql.csv"
+
+        str = File.read(path)
+        read_rows = RdbCSV.parse(str, db: :mysql, delimiter: ",")
+
+        expect(read_rows).to eq check_rows
+      end
+
+      it "parse with block" do
+        read_rows = []
+        path = "spec/fixtures/mysql.csv"
+
+        str = File.read(path)
+        RdbCSV.parse(str, db: :mysql, delimiter: ",").each do |row|
+          read_rows << row
+        end
+
+        expect(read_rows).to eq check_rows
+      end
+
+      it "parse_line" do
+        read_rows = []
+        path = "spec/fixtures/mysql.csv"
+
+        str = File.read(path)
+        read_rows = RdbCSV.parse_line(str, db: :mysql, delimiter: ",")
+
+        expect(read_rows).to eq check_rows[0]
+      end
     end
 
     describe "Read tsv" do
@@ -169,6 +265,38 @@ RSpec.describe RdbCSV do
         end
 
         expect(read_rows).to eq check_rows
+      end
+
+      it "parse without block" do
+        read_rows = []
+        path = "spec/fixtures/mysql.tsv"
+
+        str = File.read(path)
+        read_rows = RdbCSV.parse(str, db: :mysql, delimiter: "\t")
+
+        expect(read_rows).to eq check_rows
+      end
+
+      it "parse with block" do
+        read_rows = []
+        path = "spec/fixtures/mysql.tsv"
+
+        str = File.read(path)
+        RdbCSV.parse(str, db: :mysql, delimiter: "\t").each do |row|
+          read_rows << row
+        end
+
+        expect(read_rows).to eq check_rows
+      end
+
+      it "parse_line" do
+        read_rows = []
+        path = "spec/fixtures/mysql.tsv"
+
+        str = File.read(path)
+        read_rows = RdbCSV.parse_line(str, db: :mysql, delimiter: "\t")
+
+        expect(read_rows).to eq check_rows[0]
       end
     end
 
@@ -251,13 +379,46 @@ RSpec.describe RdbCSV do
 
         expect(read_rows).to eq check_rows
       end
+
+      it "parse without block" do
+        read_rows = []
+        path = "spec/fixtures/postgresql.csv"
+
+        str = File.read(path)
+        read_rows = RdbCSV.parse(str, db: :postgresql, delimiter: ",")
+
+        expect(read_rows).to eq check_rows
+      end
+
+      it "parse with block" do
+        read_rows = []
+        path = "spec/fixtures/postgresql.csv"
+
+        str = File.read(path)
+        RdbCSV.parse(str, db: :postgresql, delimiter: ",").each do |row|
+          read_rows << row
+        end
+
+        expect(read_rows).to eq check_rows
+      end
+
+      it "parse_line" do
+        read_rows = []
+        path = "spec/fixtures/postgresql.csv"
+
+        str = File.read(path)
+        read_rows = RdbCSV.parse_line(str, db: :postgresql, delimiter: ",")
+
+        expect(read_rows).to eq check_rows[0]
+      end
     end
 
     describe "Read tsv" do
       it "open" do
         read_rows = []
         path = "spec/fixtures/postgresql.tsv"
-          RdbCSV.open(path, db: :postgresql, delimiter: "\t") do |tsv|
+
+        RdbCSV.open(path, db: :postgresql, delimiter: "\t") do |tsv|
           tsv.each do |row|
             read_rows << row
           end
@@ -269,11 +430,44 @@ RSpec.describe RdbCSV do
       it "foreach" do
         read_rows = []
         path = "spec/fixtures/postgresql.tsv"
+
         RdbCSV.foreach(path, db: :postgresql, delimiter: "\t") do |row|
           read_rows << row
         end
 
         expect(read_rows).to eq check_rows
+      end
+
+      it "parse without block" do
+        read_rows = []
+        path = "spec/fixtures/postgresql.tsv"
+
+        str = File.read(path)
+        read_rows = RdbCSV.parse(str, db: :postgresql, delimiter: "\t")
+
+        expect(read_rows).to eq check_rows
+      end
+
+      it "parse with block" do
+        read_rows = []
+        path = "spec/fixtures/postgresql.tsv"
+
+        str = File.read(path)
+        RdbCSV.parse(str, db: :postgresql, delimiter: "\t").each do |row|
+          read_rows << row
+        end
+
+        expect(read_rows).to eq check_rows
+      end
+
+      it "parse_line" do
+        read_rows = []
+        path = "spec/fixtures/postgresql.tsv"
+
+        str = File.read(path)
+        read_rows = RdbCSV.parse_line(str, db: :postgresql, delimiter: "\t")
+
+        expect(read_rows).to eq check_rows[0]
       end
     end
 
@@ -316,5 +510,3 @@ RSpec.describe RdbCSV do
     end
   end
 end
-
-

@@ -14,6 +14,7 @@ Gem::Specification.new do |spec|
   spec.license       = 'MIT'
 
   spec.require_paths = ["lib"]
+  spec.files         = `git ls-files`.split($/)
 
   spec.add_development_dependency "rspec"
   spec.add_development_dependency "rake"

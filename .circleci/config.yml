@@ -1,0 +1,43 @@
+version: 2.1
+executors:
+  default:
+    parameters:
+      version:
+        type: string
+    docker:
+      - image: ruby:<< parameters.version >>
+    environment:
+      LANG:     en_US.UTF-8
+      LANGUAGE: en_US.UTF-8
+      LC_ALL:   C.UTF-8
+
+      BUNDLE_PATH: vendor/bundle
+      BUNDLE_JOBS: 4
+    working_directory: ~/app
+
+
+jobs:
+  rspec:
+    parameters:
+      version:
+        type: string
+    executor:
+      name: default
+      version: << parameters.version >>
+    steps:
+      - checkout
+      - run: gem install bundler:2.1.4
+      - run: bundle --version
+      - run: gem --version
+      - run: bundle config --local path vendor/bundle
+      - run: bundle install --jobs=4 --retry=3
+      #- ruby/bundle-install
+      - run: bundle exec rake spec
+
+workflows:
+  all-tests:
+    jobs:
+      - rspec:
+          matrix:
+            parameters:
+              version: ["2.5", "2.6", "2.7"]
